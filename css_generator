@@ -1,0 +1,8 @@
+#!/usr/bin/php
+
+<?php
+include 'function.php';
+
+my_merge_image("im1.png","im1.png");
+
+?>
