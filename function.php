@@ -26,5 +26,5 @@ function my_merge_image($first_img_path, $second_img_path)
    imagecopymerge($destination, $source_2, 150, 450, 0, 0, $largeur_source_2, $hauteur_source_2, 100);
     #   creation l'image fusion 
   header("Content-type: image/png");
-  imagepng($destination, 'test.png'); 
+  imagepng($destination, 'merge.png');
 }
