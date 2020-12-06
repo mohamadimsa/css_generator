@@ -1,67 +1,64 @@
 <?php 
 
 
-
-function my_merge_image()
- {
- 	#   charger les image 
-
- 	$source_1 = imagecreatefrompng($first_img_path);
- 	$source_2 = imagecreatefrompng($second_img_path);
- 	$destination = imagecreatetruecolor(1000,1000);
-    
-    #   renvoyer la largeur et la hauteur des image 0368985170
-
- 	$largeur_source_1 = imagesx($source_1);
- 	$hauteur_source_1 = imagesy($source_1);
- 	$largeur_source_2 = imagesx($source_2);
- 	$hauteur_source_2 = imagesy($source_2);
-    
-   #    copies les image dans la destination
-
-   imagecopymerge($destination, $source_1 , 0, 0, 0, 0, $largeur_source_1, $hauteur_source_1 , 100);
-   imagecopymerge($destination, $source_2, 150, 450, 0, 0, $largeur_source_2, $hauteur_source_2, 100);
-
-	#   creation l'image fusion 
+// function permettant de generer du css
+function generate_css(){  
 	
-   header("Content-type: image/png");
-   imagepng($destination, 'merge.png');
+	   if(file_exists("style.css")){unlink ("style.css");}
+	   
+	   $images = glob("*.png");
+	   $name_ima ="";
+			$name_image = fopen("style.css", "a+");
+			for($i = 0 ; $i < count($images);$i++){
+			   $name_ima .= ".".$images[$i].", ";
+		 }
+		  
+		 $name_ima .= "\n{ display: inline-block; background: url('sprite.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; }\n";
+		  
+		 
+	
+		  for($i = 0 ; $i < count($images);$i++){
+			 $name_ima .= ".".$images[$i]."{ background-position: -0px -0px; width: 1600px; height: 900px; }\n";
+	
+		  }
+		  fwrite($name_image ,$name_ima);
+	
+		  fclose($name_image);
+	
 }
 
-function merge_image($resource){
+// Fonction permettant de concaténer tous images se trouvant dans le dossier courant
+
+function merge_image($resource, $name_picture = "sprite"){
 
 
-	$destination = imagecreatetruecolor(1000,1000);
+	 $taille= 200 *count($resource);
+	 
 
-	
-
+	$destination = imagecreatetruecolor(200,$taille);
+       
 		for($i = 0; $i < count($resource);$i++){
-			
-		imagecopymerge($destination, $resource[$i] , 0, $i*200, 0, 0, 200, 200, 100);
+		
+		imagecopymerge($destination, $resource[$i], 0, $i*200, 0, 0, 200, 200, 100);
  
 		}
-		 
+		
 
-   imagepng($destination, 'merge.png');
+   imagepng($destination, "$name_picture.png");
+   
 
    foreach(glob("*resize.png") as $value){
 	unlink($value);
    }
 }
 
+//fonction permettant de redimensionner les images avec une hauteur et largeur maxi de 200px
+
 function resize($picture , int $num_image){
-   
-	if(!file_exists("resize")){
-		mkdir("resize",0700 );
-	}
-	
-   
-	// largeur et hauteur maximal
 
 $width = 200;
 $height = 200;
 
-	//calcule des nouvelle dimention  
 
   list($width_orig, $height_orig) = getimagesize($picture);
  $ratio_orig = $width_orig/$height_orig;
@@ -76,10 +73,6 @@ $height = 200;
  $image_p = imagecreatetruecolor($width, $height);
  $image = imagecreatefrompng($picture);
  imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
- 
- // Affichage
-
- 
  imagepng($image_p, $num_image."resize.png");
 
  }
