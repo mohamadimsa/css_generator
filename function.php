@@ -1,6 +1,16 @@
 <?php 
 // recursive revoir function recur
 
+// fonction permettant de cree un sprite dans le dossier indiquer en argv[1]
+function merge_dir_select(string $path){
+
+	if(file_exists($path) && is_dir($path)){
+		generate_css();
+	  merge_image(charge_image());  
+	}
+	
+}
+
 // fonction permettant de recupérer le nom de l'image passer en argv[2]
 function recupe_name(string $option){
   $cute = strstr($option, "=");
@@ -23,10 +33,8 @@ else{return false ;}
 function error_image(){
     global $search_pictures;
 	if(empty($search_pictures)){
-		echo "Error : aucune image de format png n'a était trouver dans ce dossier ".PHP_EOL;
 		return 0;}
 	if(count($search_pictures) <2){
-		echo "Error : le nombre d'image present dans le fichier n'est pas suffisant pour excuter le proprame veillez a avoir au minimum 2 image png".PHP_EOL;
 	   return 0;
 	}
 return 1;
@@ -146,21 +154,5 @@ $height = 200;
  // fonction 
  
  function recur(){
-	function list_dir($name, $level=0) {
-		if ($dir = opendir($name)) {
-		  while($file = readdir($dir)) {
-			for($i=1; $i<=(4*$level); $i++) {
-				echo " ";
-				
-			}
-			echo "$file".PHP_EOL;
-			if(is_dir($file) && !in_array($file, array(".",".."))) {
-			  list_dir($file,$level+1);
-			}
-		  }
-		  closedir($dir);
-		}
-	  }
-	  list_dir(".");
-
+	
  }
