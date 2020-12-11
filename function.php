@@ -2,29 +2,40 @@
 // recursive revoir function recur
 
 // fonction permettant de cree un sprite dans le dossier indiquer en argv[1]
-function merge_dir_select(string $path){
+function merge_dir_select(string $path ,string $name = "NULL" , bool $option = false){
 
 	if(file_exists($path) && is_dir($path)){
 
 		if(is_writable($path)){
-		chdir($path);
-		dir($path);
-		chmod("images.png", 0600);
+			chdir($path);
+
 		if(error_image()=== false){
-			echo getcwd();
-			generate_css();
-		
-			charge_image();
+
+			if($option == false){
+				generate_css();
+				merge_image(charge_image(),$name);
+			}
+			else{
+				generate_css($name);
+				merge_image(charge_image());
+			}
+		    
 			
 		}
 		else{
-			  echo"le nombre d'image présent dans le dossier ne permet pas de lancer le programe".PHP_EOL;
+			  echo"le nombre d'image présent dans le dossier ne permet pas de lancer le programe".PHP_EOL.PHP_EOL;
+
+			  man();
 		}
 		
-		}else{echo"le dossier n'est pas accessible veuillez verifier qui vous détenez bien de droit accés".PHP_EOL;}  
+		}else{echo"le dossier n'est pas accessible veuillez verifier qui vous détenez bien de droit accés".PHP_EOL.PHP_EOL;
+			 
+			man();
+		}  
 	}
 	else{
-		echo "le dossier que vous avez indiquer n'existe pas".PHP_EOL;
+		echo "le dossier que vous avez indiquer n'existe pas".PHP_EOL.PHP_EOL;
+
 	}
 	
 	
@@ -50,7 +61,7 @@ else{return false ;}
 //fonction qui renvois un message d'erreur si le nombre d'image png et inferieure a 1 ou inexistant 
 
 function error_image(){
-	global $search_pictures;
+   $search_pictures = glob("*.png");
 	
 	if(count($search_pictures) === 0){
 		return true;}
@@ -63,14 +74,13 @@ function error_image(){
 
  function charge_image(){
 
-	  global $search_pictures;
-	  d($search_pictures);
+	  $image_charge = glob("*.png");
 
-	for($i = 0; $i < count($search_pictures);$i++){
-	  $image[$i] = imagecreatefrompng($search_pictures[$i]);
-		resize($search_pictures[$i], $i);
+
+	for($i = 0; $i < count($image_charge);$i++){
+	  $image[$i] = imagecreatefrompng($image_charge[$i]);
+		resize($image_charge[$i], $i);
   }   
-
 	  $image_resize = glob("*resize.png");
 
 	  for($i = 0; $i < count($image_resize);$i++){
@@ -109,7 +119,7 @@ function generate_css(string $name = "style"){
 // Fonction permettant de concaténer tous images se trouvant dans le dossier courant
 
 function merge_image(array $resource, string $name_picture = "sprite"){
-
+        
 
 	 $taille= 200 *count($resource);
 	 
@@ -126,9 +136,9 @@ function merge_image(array $resource, string $name_picture = "sprite"){
    imagepng($destination, "$name_picture.png");
    
 
-   //foreach(glob("*resize.png") as $value){
-	//unlink($value);
-  // }
+   foreach(glob("*resize.png") as $value){
+	unlink($value);
+  }
 }
 
 //fonction permettant de redimensionner les images avec une hauteur et largeur maxi de 200px
