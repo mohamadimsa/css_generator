@@ -41,3 +41,16 @@ for($i = 0 ; $i < count($dossier);$i++)
      
     }
 }
+for($i = 0; count($im_t) > $i; $i++){
+
+  $imagename = substr(strrchr($im_t[$i], "/"), 1);
+ $name_do = strrev($im_t[$i]);
+ $name_do = strstr($name_do, '/');
+$name_do = substr($name_do,1);
+$name_do = strrev($name_do);
+$name_do = substr(strrchr($name_do, "/"), 1);
+$path_image[$i] = $name_do."/".$imagename;
+
+}
+
+d($path_image);
