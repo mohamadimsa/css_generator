@@ -15,6 +15,8 @@ if ($handle = opendir('.')) {
   }
   closedir($handle);
 }
+
+$im_t = [];
 for($i = 0 ; $i < count($dossier);$i++)
 {
   if ($handle = opendir($dossier[$i])) {
@@ -24,14 +26,18 @@ for($i = 0 ; $i < count($dossier);$i++)
     
      chdir($tr_dos);
      $im = glob("*png");
-     if(count($im > 0)){
-       $image_trouver[$im[$i]] = $tr_dos;
-     }
+     if(count($im)> 0){
+        
+          foreach($im as $value){
 
+            array_push($im_t,getcwd()."/".$value);
+          }
+           
+      
+     }
+     
     $dos_courant = dirname(getcwd());
     chdir($dos_courant);
      
     }
 }
-d($image_trouver);
- 
