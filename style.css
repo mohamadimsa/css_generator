@@ -1,0 +1,39 @@
+.mario.png, .sprite.png, .ping.png, .images.png, .images2.png, 
+{
+ display: inline-block;
+ background: url('sprite.png') no-repeat;
+ overflow: hidden;
+ text-indent: -9999px;
+ text-align: left;
+ }
+
+.mario.png{
+ background-position: -0px 0px;
+ width: 200px;
+ height: 200px;
+ }
+
+.sprite.png{
+ background-position: -0px 200px;
+ width: 200px;
+ height: 200px;
+ }
+
+.ping.png{
+ background-position: -0px 400px;
+ width: 200px;
+ height: 200px;
+ }
+
+.images.png{
+ background-position: -0px 600px;
+ width: 200px;
+ height: 200px;
+ }
+
+.images2.png{
+ background-position: -0px 800px;
+ width: 200px;
+ height: 200px;
+ }
+

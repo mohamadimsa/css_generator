@@ -2,6 +2,8 @@
 
 <?php
 
+
+
 $search_pictures = glob("*.png");
 include 'cssgenerator/function.php';
 
@@ -19,20 +21,20 @@ if(!isset($argv[2]) && isset($argv[1])&& $argv[1] != "-s" && !regex("--output-st
 
 
 if(!isset($argv[1])){
-  generate_css();
-  merge_image(charge_image());
+  generate_css($search_pictures);
+  merge_image(charge_image($search_pictures));
 }
 //  option -s --output-style=
 elseif(isset($argv[1]) && $argv[1] == "-s" || regex("--output-style=", $argv[1])){
         if(regex("--output-style=", $argv[1]) && !isset($argv[2])){
 
-           generate_css(recupe_name($argv[1]));
-           merge_image(charge_image());
+           generate_css($search_pictures,recupe_name($argv[1]));
+           merge_image(charge_image($search_pictures));
 
         }
         elseif($argv[1] == "-s" && isset($argv[2]) && !isset($argv[3])){
-          generate_css($argv[2]);
-          merge_image(charge_image());
+          generate_css($search_pictures,$argv[2]);
+          merge_image(charge_image($search_pictures));
         }
         elseif($argv[1] == "-s" && isset($argv[2]) && isset($argv[3])){
           merge_dir_select($argv[3], $argv[2], true);
@@ -42,7 +44,7 @@ elseif(isset($argv[1]) && $argv[1] == "-s" || regex("--output-style=", $argv[1])
         }
         elseif(regex("--output-style=", $argv[1]) && isset($argv[2])){
 
-          generate_css();
+          generate_css($search_pictures);
           merge_dir_select($argv[2], recupe_name($argv[1]), true);
         }
         else{
@@ -55,19 +57,19 @@ elseif(isset($argv[1]) && $argv[1] == "-s" || regex("--output-style=", $argv[1])
 elseif(isset($argv[1]) && $argv[1] == "-i" || regex("--output-image=", $argv[1])){
         if(regex("--output-image=", $argv[1]) && !isset($argv[2])){
 
-          generate_css();
-          merge_image(charge_image(), recupe_name($argv[1]));
+          generate_css($search_pictures);
+          merge_image(charge_image($search_pictures), recupe_name($argv[1]));
         }
         elseif($argv[1] == "-i" && isset($argv[2]) && !isset($argv[3])){
-          generate_css();
-          merge_image(charge_image(),$argv[2]);
+          generate_css($search_pictures);
+          merge_image(charge_image($search_pictures),$argv[2]);
         }
         elseif($argv[1] == "-i" && isset($argv[2]) && isset($argv[3])){
           merge_dir_select($argv[3], $argv[2], false);
         }
         elseif(regex("--output-image=", $argv[1]) && isset($argv[2])){
 
-          generate_css();
+          generate_css($search_pictures);
           merge_dir_select($argv[2], recupe_name($argv[1]), false);
         }
         else{
@@ -75,11 +77,12 @@ elseif(isset($argv[1]) && $argv[1] == "-i" || regex("--output-image=", $argv[1])
         }
 }
    // option -r
-elseif(isset($argv[1]) && $argv[1] == "-r" || regex("--recurive", $argv[1])){
-  echo "option en cours de maintenance".PHP_EOL.PHP_EOL;
-  man();
-}
+ /*if(isset($argv[1]) && $argv[1] == "-r" || regex("--output-image=", $argv[1])){
+
+    recur();
+}*/
 elseif($argv[1] =="--help" || $argv[1] == "-h"){
   man();
 }
+
 
