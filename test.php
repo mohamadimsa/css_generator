@@ -66,28 +66,16 @@ if(count($path_image) > 0){
 
 }
 
-//merge_image(charge_image($imageamerge));
+merge_image(charge_image($imageamerge));
 
   
 foreach($imageamerge as $key => $value){
   
-  $imagename = substr(strrchr($value, "/"), 1);
-    array_push($imageamerge,$imagename);
-  
-  if(str_contains($value, "/"))
-  {
-    
-
-    unset($imageamerge[$key]);
-    
+  if(false !== (substr(strrchr($value, "/"), 1) )){
+      $imageamerge[$key] = substr(strrchr($value, "/"), 1);
   }
-  if(strlen($value)== 0){
-    unset($imageamerge[$key]);
-  }
+   
 }
   
- $imageamerge= array_filter($imageamerge);
- 
- d($imageamerge);
- $imageamerge= array_merge($imageamerge);
+d($imageamerge);
  generate_css($imageamerge);

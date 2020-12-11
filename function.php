@@ -2,9 +2,9 @@
 // recursive revoir function recur
 
 // fonction permettant de cree un sprite dans le dossier indiquer en argv[1]
-function merge_dir_select(string $path ,string $name = "NULL" , bool $option = false){
+function merge_dir_select(string $path ,string $name = "NULL" , bool $option = false , bool $recur = false){
 
-	if(file_exists($path) && is_dir($path)){
+	if(file_exists($path) && is_dir($path) && $recur == false){
 
 		if(is_writable($path)){
 			chdir($path);
@@ -22,6 +22,7 @@ function merge_dir_select(string $path ,string $name = "NULL" , bool $option = f
 		    
 			
 		}
+
 		else{
 			  echo"le nombre d'image présent dans le dossier ne permet pas de lancer le programe".PHP_EOL.PHP_EOL;
 
@@ -33,6 +34,15 @@ function merge_dir_select(string $path ,string $name = "NULL" , bool $option = f
 			man();
 		}  
 	}
+	elseif(file_exists($path) && is_dir($path) && $recur != false){
+		if(is_writable($path)){
+			chdir($path);
+			recur();
+		}
+		else{ echo "error : le dossier n'est pas accesible en écriture\n";}
+		
+		}
+		
 	else{
 		echo "le dossier que vous avez indiquer n'existe pas".PHP_EOL.PHP_EOL;
 
@@ -184,6 +194,7 @@ $height = 200;
  // fonction 
  
  function recur(){
+
 	$dossier = [];
 $i = -1;
 if ($handle = opendir('.')) {
@@ -224,6 +235,7 @@ for($i = 0 ; $i < count($dossier);$i++)
      
     }
 }
+if(count($im_t)>0){
 for($i = 0; count($im_t) > $i; $i++){
 
 $imagename = substr(strrchr($im_t[$i], "/"), 1);
@@ -235,43 +247,33 @@ $name_do = substr(strrchr($name_do, "/"), 1);
 $path_image[$i] = $name_do."/".$imagename;
 
 }
+}
 
 $image_dc = glob("*png");
 for($i = 0;count($image_dc) > $i ; $i++)
 {
   $imageamerge[$i] = $image_dc[$i];
 }
-if(count($path_image) > 0){
+if( isset($path_image)  && count($path_image) > 0){
    foreach($path_image as $value)
    {
      array_push($imageamerge,$value);
    }
 
+
+
+
 }
-
 merge_image(charge_image($imageamerge));
-
-  
 foreach($imageamerge as $key => $value){
   
-  $imagename = substr(strrchr($value, "/"), 1);
-    array_push($imageamerge,$imagename);
-  
-  if(str_contains($value, "/"))
-  {
-    
-
-    unset($imageamerge[$key]);
-    
+  if(false !== (substr(strrchr($value, "/"), 1) )){
+      $imageamerge[$key] = substr(strrchr($value, "/"), 1);
   }
-  if(strlen($value)== 0){
-    unset($imageamerge[$key]);
-  }
+   
 }
   
- $imageamerge= array_filter($imageamerge);
- 
- d($imageamerge);
- $imageamerge= array_merge($imageamerge);
+d($imageamerge);
  generate_css($imageamerge);
+
  }

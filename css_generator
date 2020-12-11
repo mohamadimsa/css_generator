@@ -14,7 +14,8 @@ if(error_image() === true && !isset($argv[1]))
 }
 
 if(!isset($argv[2]) && isset($argv[1])&& $argv[1] != "-s" && !regex("--output-style=", $argv[1]) &&
- $argv[1] != "-i" && !regex("--output-image=", $argv[1]) && $argv[1] != "--help" && $argv[1] != "-h" ){
+ $argv[1] != "-i" && !regex("--output-image=", $argv[1]) && $argv[1] != "--help" && $argv[1] != "-h" &&
+ $argv[1] != "-r" && !regex("--recurcive", $argv[1])){
   merge_dir_select($argv[1]);
 
  }
@@ -76,11 +77,15 @@ elseif(isset($argv[1]) && $argv[1] == "-i" || regex("--output-image=", $argv[1])
           man();
         }
 }
-   // option -r
- /*if(isset($argv[1]) && $argv[1] == "-r" || regex("--output-image=", $argv[1])){
-
+   //option -r
+ if(isset($argv[1]) && $argv[1] == "-r" || regex("--recursive", $argv[1])){
+  if($argv[1] == "--recursive" || $argv[1] == "-r" && !isset($argv[2]) ){
     recur();
-}*/
+  }
+  elseif($argv[1] == "--recursive" || $argv[1] == "-r" && isset($argv[2]) ){
+    merge_dir_select($argv[2], "null", false ,true);
+  }
+}
 elseif($argv[1] =="--help" || $argv[1] == "-h"){
   man();
 }
