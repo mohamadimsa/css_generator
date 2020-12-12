@@ -107,13 +107,29 @@ elseif(isset($argv[1]) && $argv[1] == "-o" || regex("--override-size=", $argv[1]
 
     
 }
+ elseif($argv[1] == "-o" && isset($argv[2])  && isset($argv[3])){
+  if(false != verif_o($argv[2])){
+    recup_size($argv[2]);
 
+    if(check_dos_and_merge($argv[3],$siz['width'],$siz['height'])){
+      d($siz['height']);
+      echo "creation sprite : ok";
+
+    }
+    else{
+      echo "error : veuillez vérifier que le dossier existe ou qu'il contient bien des image de type png\n";
+    }
+
+    }
+    else{echo "error : aucune image trouver dans ce dossier\n";}
+        
+  }
+       
 }
-
 // man
 elseif($argv[1] =="--help" || $argv[1] == "-h"){
   man();
 }
-
+//
 
 

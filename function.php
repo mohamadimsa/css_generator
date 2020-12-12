@@ -1,4 +1,30 @@
 <?php 
+
+
+//fonction check dossier avanr merge
+function check_dos_and_merge($path,$width =800, $height = 740){
+	if(file_exists($path) && is_dir($path)){
+        if(is_writable($path)){
+			chdir($path);
+			$im = glob("*png");
+			
+			if(count($im)>0)
+			{   $im = glob("*png");
+				merge_image(charge_image($im,$width,$height));
+				return true;
+			}
+			else{echo"ni1";
+				return false;}
+		}
+		else{echo"ni2";
+			return false;
+		}
+	}
+	else{
+		echo"ni3";
+		return false;
+	}
+}
 // fonction permettant de recuperer la taille d'image pour l'option -o
 function recup_size(string $size){
    global	$siz;
