@@ -1,6 +1,33 @@
 <?php 
-// recursive revoir function recur
+// fonction permettant de recuperer la taille d'image pour l'option -o
+function recup_size(string $size){
+   global	$siz;
+	$width = strrev($size);
+	$width = substr(strrchr($width, "x"), 1);
+	$width = strrev($width);
+	$width =intval($width);
+  $height = substr(strrchr($size, "x"), 1);
+  $height =intval($height);
+ $siz["height"] = $height;
+ $siz["width"]  = $width;
+  
+  }
+//function permettant de verifier que les argument passer sont bien valide pour l'option -o
+function verif_o($argument){
+	$caratere_spe = '/[^a-zA-Z0-9\ \\\\\/\.\'\\\\"]/m';
+	$carater_alpha = '/[a-wA-Wy-zX-Z]/m';
+	preg_match_all($caratere_spe, $argument, $c_s, PREG_SET_ORDER, 0);
+	preg_match_all($carater_alpha, $argument, $c_a, PREG_SET_ORDER, 0);
 
+	if(count($c_s)> 0 || count($c_a)>0) {
+		return false;
+	}
+	elseif(substr_count($argument, 'x') != 1){
+		return false;
+	}
+	else{return true;};
+
+}
 // fonction permettant de cree un sprite dans le dossier indiquer en argv[1]
 function merge_dir_select(string $path ,string $name = "NULL" , bool $option = false , bool $recur = false){
 
@@ -82,11 +109,11 @@ function error_image(){
 }
 // function permettant de charger et redimentioner les images
 
- function charge_image($image_charge){
+ function charge_image($image_charge, int $width =800, int $height = 740){
 
 	for($i = 0; $i < count($image_charge);$i++){
 	  $image[$i] = imagecreatefrompng($image_charge[$i]);
-		resize($image_charge[$i], $i);
+		resize($image_charge[$i], $i,$width,$height);
   }   
 	  $image_resize = glob("*resize.png");
 
@@ -99,7 +126,8 @@ function error_image(){
 
 // function permettant de generer du css
 function generate_css(array $images,string $name = "style"){  
-	  
+	  global $w;
+	  global $h;
 		
 	$name_css = $name.".css";
 	   if(file_exists("$name_css")){unlink("$name_css");}
@@ -116,8 +144,8 @@ function generate_css(array $images,string $name = "style"){
 		 
 	      
 		  for($i = 0 ; $i < count($images);$i++){
-			  $positon = $i*200;
-			 $name_ima .= ".".$images[$i]."{\n background-position: -0px $positon"."px;\n width: 200px;\n height: 200px;\n }\n\n";
+			  $positon = $i*$h;
+			 $name_ima .= ".".$images[$i]."{\n background-position: -0px $positon"."px;\n width: ".$w."px;\n height: ".$h."px;\n }\n\n";
 	
 		  }
 		  fwrite($name_image ,$name_ima);
@@ -189,7 +217,8 @@ function resize($picture , int $num_image, int $width = 800 , int $height = 740)
         echo"Concaténez toutes les images d'un dossier dans un sprite et écris une feuille de style prête à l'emploi.\nLes arguments obligatoires pour les options longues sont également obligatoires pour les options courtes".PHP_EOL;
 		echo "\n   -r, --recursive      Recherchez des images dans le dossier assets_folder passé comme argument et dans tous ses sous-répertoires.\n".PHP_EOL;
 		echo "   -i, --output-image=IMAGE     Nom de l'image générée. S'il est vide, le nom par défaut est «sprite.png».\n".PHP_EOL;
-		echo "   -s, --output-style=STYLE     Nom de la feuille de style générée. S'il est vide, le nom par défaut est «style.css».".PHP_EOL;
+		echo "   -s, --output-style=STYLE     Nom de la feuille de style générée. S'il est vide, le nom par défaut est «style.css».\n".PHP_EOL;
+		echo "   -o, --override-size=SIZE     Forcer chaque image du sprite à s'adapter à une taille de SIZExSIZE pixels.\n".PHP_EOL;
 	}
 
  // fonction 

@@ -4,7 +4,7 @@
 
 $search_pictures = glob("*.png");
 include 'css/function.php';
-
+$siz = [];
 if(error_image() === true && !isset($argv[1]))
 {
  echo "Error : le nombre d'image present dans le fichier n'est pas suffisant pour excuter le programe veillez a avoir au minimum 2 image png".PHP_EOL;
@@ -13,9 +13,8 @@ if(error_image() === true && !isset($argv[1]))
 
 if(!isset($argv[2]) && isset($argv[1])&& $argv[1] != "-s" && !regex("--output-style=", $argv[1]) &&
  $argv[1] != "-i" && !regex("--output-image=", $argv[1]) && $argv[1] != "--help" && $argv[1] != "-h" &&
- $argv[1] != "-r" && !regex("--recurcive", $argv[1])){
+ $argv[1] != "-r" && !regex("--recurcive", $argv[1])&& $argv[1] != "-o" && !regex("--override-size=", $argv[1])){
   merge_dir_select($argv[1]);
-
  }
 
 
@@ -86,10 +85,28 @@ elseif(isset($argv[1]) && $argv[1] == "-i" || regex("--output-image=", $argv[1])
 }
 
 //option -o
-elseif(isset($argv[1]) && $argv[1] == "-0" || regex("--override-size=", $argv[1])){
+elseif(isset($argv[1]) && $argv[1] == "-o" || regex("--override-size=", $argv[1])){
   if(regex("--override-size=", $argv[1]) && !isset($argv[2])){
-      return 1;
+      echo "option -o ok\n";
   }
+  elseif($argv[1] == "-o" && isset($argv[2])  && !isset($argv[3])){
+    if(false != verif_o($argv[2])){
+      recup_size($argv[2]);
+      if(count($search_pictures)!=0){
+      merge_image(charge_image($search_pictures,$siz['width'],$siz['height']));
+      }
+      else{echo "error : aucune image trouver dans ce dossier\n";}
+          
+    }
+    else
+    {
+      echo "error : respecter la syntax 'SIZExSIZE'".PHP_EOL.PHP_EOL;
+
+      man();
+    }
+
+    
+}
 
 }
 
