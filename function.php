@@ -128,16 +128,17 @@ function generate_css(array $images,string $name = "style"){
 // Fonction permettant de concaténer tous images se trouvant dans le dossier courant
 
 function merge_image(array $resource, string $name_picture = "sprite"){
-        
+		global $w;
+		global $h;
 
-	 $taille= 200 *count($resource);
+	 $taille= $h *count($resource);
 	 
 
-	$destination = imagecreatetruecolor(200,$taille);
+	$destination = imagecreatetruecolor($w,$taille);
        
 		for($i = 0; $i < count($resource);$i++){
 		
-		imagecopymerge($destination, $resource[$i], 0, $i*200, 0, 0, 200, 200, 100);
+		imagecopymerge($destination, $resource[$i], 0, $i*$h, 0, 0, $w, $h, 100);
  
 		}
 		
@@ -152,10 +153,7 @@ function merge_image(array $resource, string $name_picture = "sprite"){
 
 //fonction permettant de redimensionner les images avec une hauteur et largeur maxi de 200px
 
-function resize($picture , int $num_image){
-
-$width = 200;
-$height = 200;
+function resize($picture , int $num_image, int $width = 800 , int $height = 740){
 
 
   list($width_orig, $height_orig) = getimagesize($picture);
@@ -172,6 +170,9 @@ $height = 200;
  $image = imagecreatefrompng($picture);
  imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
  imagepng($image_p, $num_image."resize.png");
+
+ $GLOBALS['w'] = $width;
+ $GLOBALS['h'] = $height;
 
  }
 // function debug var_dump en simplifier 

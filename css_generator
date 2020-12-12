@@ -2,10 +2,8 @@
 
 <?php
 
-
-
 $search_pictures = glob("*.png");
-include 'cssgenerator/function.php';
+include 'css/function.php';
 
 if(error_image() === true && !isset($argv[1]))
 {
@@ -78,7 +76,7 @@ elseif(isset($argv[1]) && $argv[1] == "-i" || regex("--output-image=", $argv[1])
         }
 }
    //option -r
- if(isset($argv[1]) && $argv[1] == "-r" || regex("--recursive", $argv[1])){
+ elseif(isset($argv[1]) && $argv[1] == "-r" || regex("--recursive", $argv[1])){
   if($argv[1] == "--recursive" || $argv[1] == "-r" && !isset($argv[2]) ){
     recur();
   }
@@ -86,8 +84,19 @@ elseif(isset($argv[1]) && $argv[1] == "-i" || regex("--output-image=", $argv[1])
     merge_dir_select($argv[2], "null", false ,true);
   }
 }
+
+//option -o
+elseif(isset($argv[1]) && $argv[1] == "-0" || regex("--override-size=", $argv[1])){
+  if(regex("--override-size=", $argv[1]) && !isset($argv[2])){
+      return 1;
+  }
+
+}
+
+// man
 elseif($argv[1] =="--help" || $argv[1] == "-h"){
   man();
 }
+
 
 
