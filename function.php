@@ -31,7 +31,7 @@ function recup_size(string $size){
 	$width = strrev($size);
 	$width = substr(strrchr($width, "x"), 1);
 	$width = strrev($width);
-	$width =intval($width);
+  $width =intval($width);
   $height = substr(strrchr($size, "x"), 1);
   $height =intval($height);
  $siz["height"] = $height;
@@ -55,22 +55,22 @@ function verif_o($argument){
 
 }
 // fonction permettant de cree un sprite dans le dossier indiquer en argv[1]
-function merge_dir_select(string $path ,string $name = "NULL" , bool $option = false , bool $recur = false){
+function merge_dir_select(string $path ,string $name = "sprite" , bool $option = false , bool $recur = false){
 
 	if(file_exists($path) && is_dir($path) && $recur == false){
 
 		if(is_writable($path)){
 			chdir($path);
-
+			$im = glob("*png");
 		if(error_image()=== false){
 
 			if($option == false){
-				generate_css();
-				merge_image(charge_image(),$name);
+				generate_css($im);
+				merge_image(charge_image($im),$name);
 			}
 			else{
-				generate_css($name);
-				merge_image(charge_image());
+				generate_css($im,$name);
+				merge_image(charge_image($im));
 			}
 		    
 			
@@ -168,10 +168,10 @@ function generate_css(array $images,string $name = "style"){
 		  
 		 $name_ima .= "\n{\n display: inline-block;\n background: url('sprite.png') no-repeat;\n overflow: hidden;\n text-indent: -9999px;\n text-align: left;\n }\n\n";
 		 
-	      d($h);
+	      
 		  for($i = 0 ; $i < count($images);$i++){
 			  $positon = $i*$h;
-			 $name_ima .= ".".$images[$i]."{\n background-position: -0px".$positon."px;\n width: ".$w."px;\n height: ".$h."px;\n }\n\n";
+			 $name_ima .= ".".$images[$i]."{\n background-position: -0px $positon"."px;\n width: ".$w."px;\n height: ".$h."px;\n }\n\n";
 	
 		  }
 		  fwrite($name_image ,$name_ima);
@@ -329,7 +329,6 @@ foreach($imageamerge as $key => $value){
    
 }
   
-d($imageamerge);
  generate_css($imageamerge);
 
  }
