@@ -168,10 +168,10 @@ function generate_css(array $images,string $name = "style"){
 		  
 		 $name_ima .= "\n{\n display: inline-block;\n background: url('sprite.png') no-repeat;\n overflow: hidden;\n text-indent: -9999px;\n text-align: left;\n }\n\n";
 		 
-	      
+	      d($h);
 		  for($i = 0 ; $i < count($images);$i++){
 			  $positon = $i*$h;
-			 $name_ima .= ".".$images[$i]."{\n background-position: -0px $positon"."px;\n width: ".$w."px;\n height: ".$h."px;\n }\n\n";
+			 $name_ima .= ".".$images[$i]."{\n background-position: -0px".$positon."px;\n width: ".$w."px;\n height: ".$h."px;\n }\n\n";
 	
 		  }
 		  fwrite($name_image ,$name_ima);
